@@ -1,0 +1,9 @@
+services:
+  mongo:
+    image: mongo:8
+    ports: ["27017:27017"]
+    volumes:
+      - mongo-data:/data/db
+      - ./mongosh:/scripts      # đưa thư mục script vào container để mongosh chạy được
+volumes:
+  mongo-data:
