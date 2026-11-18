@@ -1,0 +1,21 @@
+# 02_structures.redis — Hash, List, Set, Sorted set
+# Chạy:  docker compose exec -T redis redis-cli < redis/02_structures.redis
+
+# Hash: một object, nhiều field
+HSET user:42 name "Linh" city "Hanoi" age 21
+HGET user:42 city
+HGETALL user:42
+
+# List: hàng đợi (push trái, pop phải)
+LPUSH jobs "resize:img1" "resize:img2"
+RPOP jobs
+
+# Set: phần tử không trùng + phép toán tập hợp
+SADD tags:post1 python data ai
+SADD tags:post2 python web
+SINTER tags:post1 tags:post2
+
+# Sorted set: bảng xếp hạng
+ZADD board 1200 "linh" 950 "nam" 1430 "mai"
+ZREVRANGE board 0 2 WITHSCORES
+ZRANK board "nam"

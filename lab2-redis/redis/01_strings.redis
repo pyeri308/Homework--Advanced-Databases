@@ -1,0 +1,8 @@
+# 01_strings.redis — Strings, counters và expiry
+# Chạy:  docker compose exec -T redis redis-cli < redis/01_strings.redis
+SET user:42:name "Linh"
+GET user:42:name
+INCR page:home:views
+INCRBY page:home:views 10
+SET otp:linh "834512" EX 60
+TTL otp:linh
