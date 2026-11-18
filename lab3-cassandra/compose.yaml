@@ -1,0 +1,30 @@
+# Cụm Cassandra 3 node cho lab SensorRing (dùng luôn cho phần lý thuyết).
+# Cần khoảng 3 GB RAM trống. Docker Desktop: Settings -> Resources -> Memory >= 4 GB.
+x-cassandra: &cassandra
+  image: cassandra:5
+  environment:
+    CASSANDRA_CLUSTER_NAME: sensorring
+    CASSANDRA_SEEDS: cass1
+    MAX_HEAP_SIZE: 512M
+    HEAP_NEWSIZE: 128M
+  volumes:
+    - ./cql:/cql:ro            # để chạy file .cql bằng cqlsh -f /cql/...
+  healthcheck:
+    test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+    interval: 15s
+    timeout: 10s
+    retries: 20
+    start_period: 60s
+
+services:
+  cass1:
+    <<: *cassandra
+    ports: ["9042:9042"]
+  cass2:
+    <<: *cassandra
+    depends_on:
+      cass1: { condition: service_healthy }
+  cass3:
+    <<: *cassandra
+    depends_on:
+      cass2: { condition: service_healthy }
